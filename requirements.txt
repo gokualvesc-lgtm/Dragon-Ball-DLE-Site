@@ -1,6 +1,3 @@
-sqlite3
-os
-random
 python-dotenv
 Flask
 gunicorn
