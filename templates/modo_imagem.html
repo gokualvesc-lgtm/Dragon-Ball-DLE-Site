@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODO COM IMAGEM - DRAGON BALL DLE</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #070b1e;
+            color: #e2e8f0;
+        }
+        .page {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            letter-spacing: 0.1em;
+        }
+        .header p {
+            margin: 0.5rem 0 0;
+            color: #94a3b8;
+        }
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+        .card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+        }
+        .image-box {
+            min-height: 360px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 2px dashed #475569;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            text-align: center;
+            padding: 1rem;
+        }
+        .image-box img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 1rem;
+            object-fit: contain;
+        }
+        .input-group {
+            margin-top: 1rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #cbd5e1;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #334155;
+            background: #020617;
+            color: #f8fafc;
+            font-size: 1rem;
+        }
+        .input-group button {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            background: #2563eb;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .input-group button:hover {
+            background: #1d4ed8;
+        }
+        .info-box {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .info-box strong {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #e2e8f0;
+        }
+        .info-text {
+            background: #020617;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+        .table-wrapper {
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px;
+        }
+        th, td {
+            padding: 0.95rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+        th {
+            background: #111827;
+            color: #f8fafc;
+            font-size: 0.95rem;
+        }
+        td {
+            background: #0f172a;
+            color: #cbd5e1;
+        }
+        tr.match td {
+            background: #0f2f1d;
+            color: #a7f3d0;
+        }
+        tr.mismatch td {
+            background: #2f1219;
+            color: #fecaca;
+        }
+        .match {
+            background: #0f2f1d;
+            color: #a7f3d0;
+        }
+        .mismatch {
+            background: #2f1219;
+            color: #fecaca;
+        }
+        .hint {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-top: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <h1>MODO COM IMAGEM</h1>
+            <p>Escreva o nome do personagem para ver as características e comparação</p>
+        </header>
+
+        <div class="game-area">
+            <section class="card">
+                <div class="image-box">
+                    {% if character %}
+                        <img src="{{ url_for('static', filename='imagens/' + (character[0] | capitalize) + '.jpg') }}" alt="Imagem do personagem">
+                        <div>
+                            <strong>Área da imagem</strong>
+                            <p>Coloque uma imagem do personagem aqui.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="input-group">
+                    <form action="/start" method="get">
+                        <label for="nome">Quem é o personagem?</label>
+                        <input id="nome" name="nome" type="text" placeholder="Digite o nome do personagem" value="{{ guess_name or '' }}">
+                        <button type="submit">Verificar personagem</button>
+                    </form>
+                    <p class="hint">Digite o nome completo do personagem e aperte o botão para comparar.</p>
+                </div>
+            </section>
+
+            <section class="card info-box">
+                <div>
+                    <strong>Resultado atual</strong>
+                    {% if guess %}
+                        <div class="info-text">Personagem escolhido: <strong>{{ guess[0] }}</strong></div>
+                    {% elif guess_name %}
+                        <div class="info-text">Personagem não encontrado: <strong>{{ guess_name }}</strong></div>
+                    {% else %}
+                        <div class="info-text">Digite um personagem para iniciar o modo com imagem.</div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <strong>Como jogar</strong>
+                    <div class="info-text">
+                        - Veja a imagem do personagem no lado esquerdo.
+                        - Escreva o nome do personagem no campo acima.
+                        - A tabela abaixo mostrará as características.
+                        - As linhas verdes indicam características corretas.
+                        - As linhas vermelhas indicam características incorretas.
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Seu palpite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set guess_data = guess or () %}
+                    {% set matches = matches or {} %}
+                    {% set index_map = {'raca': 1, 'alinhamento': 2, 'saga': 3, 'universo': 4, 'grupo': 5, 'planeta': 6, 'status': 7} %}
+                    {% for field, label in {
+                        'raca': 'Raça',
+                        'alinhamento': 'Alinhamento',
+                        'saga': 'Saga',
+                        'universo': 'Universo',
+                        'grupo': 'Grupo',
+                        'planeta': 'Planeta',
+                        'status': 'Status'
+                    }.items() %}
+                    {% set cls = '' %}
+                    {% if matches.get(field) is sameas true %}
+                        {% set cls = 'match' %}
+                    {% elif matches.get(field) is sameas false %}
+                        {% set cls = 'mismatch' %}
+                    {% endif %}
+                    <tr class="{{ cls }}">
+                        <td>{{ label }}</td>
+                        <td>{{ guess_data[index_map[field]] if guess_data else '---' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

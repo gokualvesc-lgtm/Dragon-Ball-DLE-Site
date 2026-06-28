@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Acertou! - DRAGON BALL DLE</title>
+    <style>
+        body { background: linear-gradient(180deg,#041022 0%,#071331 100%); color:#e6eef8; font-family: Arial, sans-serif; margin:0; padding:0; }
+        .wrap { max-width:900px; margin:4rem auto; padding:2rem; text-align:center; }
+        .card { background:#071428; border-radius:12px; padding:2rem; box-shadow:0 10px 30px rgba(0,0,0,.5); }
+        h1 { margin:0; font-size:3rem; color:#9bf6c6; }
+        p { margin:1rem 0; color:#cfe8ff; }
+        .attrs { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1rem; }
+        .attr { background:#021427; padding:0.75rem 1rem; border-radius:8px; border:1px solid rgba(255,255,255,.03); color:#dff8ea; }
+        .buttons { margin-top:1.5rem; display:flex; gap:1rem; justify-content:center; }
+        a.btn { display:inline-block; padding:0.75rem 1.25rem; border-radius:8px; text-decoration:none; color:white; background:#2563eb; }
+        a.btn.secondary { background:#334155; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="card">
+            <h1>Acertou!</h1>
+            <p>Você adivinhou: <strong>{{ character[0] if character else (guess_name or '—') }}</strong></p>
+
+            <div class="attrs">
+                <div class="attr">Raça: {{ character[1] if character else '—' }}</div>
+                <div class="attr">Alinhamento: {{ character[2] if character else '—' }}</div>
+                <div class="attr">Saga: {{ character[3] if character else '—' }}</div>
+                <div class="attr">Universo: {{ character[4] if character else '—' }}</div>
+                <div class="attr">Grupo: {{ character[5] if character else '—' }}</div>
+                <div class="attr">Planeta: {{ character[6] if character else '—' }}</div>
+                <div class="attr">Status: {{ character[7] if character else '—' }}</div>
+            </div>
+
+            <div class="buttons">
+                <a class="btn" href="/start">Jogar novamente</a>
+                <a class="btn secondary" href="/">Voltar ao menu</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
